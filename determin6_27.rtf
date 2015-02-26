@@ -1,0 +1,594 @@
+{\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf540
+{\fonttbl\f0\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;\red127\green0\blue85;\red63\green127\blue95;\red0\green0\blue192;
+\red42\green0\blue255;}
+\margl1440\margr1440\vieww9000\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720
+
+\f0\fs22 \cf2 import\cf0  java.util.ArrayList;\
+\cf2 import\cf0  \ul java.util.Arrays\ulnone ;\
+\cf2 import\cf0  \ul java.util.Collections\ulnone ;\
+\cf2 import\cf0  java.util.HashMap;\
+\cf2 import\cf0  java.util.HashSet;\
+\cf2 import\cf0  java.util.Set;\
+\cf2 import\cf0  \ul java.util.ArrayList\ulnone ;\
+\
+\
+\cf2 public\cf0  \cf2 class\cf0  determin \{\
+	\cf3 /*\cf0 \
+\pard\pardeftab720
+\cf3 	 * union and intersection of sets\cf0 \
+\cf3 	 */\cf0 \
+   \cf2 public\cf0  Set<Integer> union(Set<Integer> list1, Set<Integer> list2) \{\
+        Set<Integer> set = \cf2 new\cf0  HashSet<Integer>();\
+\
+        set.addAll(list1);\
+        set.addAll(list2);\
+\
+        \cf2 return\cf0  set;\
+    \}\
+\
+   \cf2 public\cf0  Set<Integer> intersection(Set<Integer> list1, Set<Integer> list2) \{\
+       Set<Integer> set = \cf2 new\cf0  HashSet<Integer>();\
+\
+        \cf2 for\cf0  (Integer t : list1) \{\
+            \cf2 if\cf0 (list2.contains(t)) \{\
+                set.add(t);\
+            \}\
+        \}\
+\
+        \cf2 return\cf0  set;\
+    \}\
+   \
+   \cf2 public\cf0  Set<Set<Integer>> UNION(Set<Set<Integer>> list1, Set<Set<Integer>> list2) \{\
+       Set<Set<Integer>> set = \cf2 new\cf0  HashSet<Set<Integer>>();\
+\
+\
+       set.addAll(list1);\
+       set.addAll(list2);\
+\
+       \cf2 return\cf0  set;\
+    \}   \
+   \
+   \cf2 public\cf0  Set<Integer> difference(Set<Integer> list1, Set<Integer> list2) \{\
+	   Set<Integer> tmp = \cf2 new\cf0  HashSet<Integer>(list1);\
+	    tmp.removeAll(list2);\
+	    \cf2 return\cf0  tmp;\
+	  \}\
+   \
+	\cf3 /*\cf0 \
+\cf3 	 * The hyper-triangle is stored as this format:\cf0 \
+\cf3 	 * <v1, \ul Ep\ulnone , v2, \ul Eq\ulnone , v3, \ul Er\ulnone , v1>, all of them are integers\cf0 \
+\cf3 	 */\cf0 \
+	\cf2 public\cf0  Set<ArrayList<Integer>> getHyperTriangleIndex(\cf2 int\cf0 [][] array)\
+	\{\
+		Set<ArrayList<Integer>> set = \cf2 new\cf0  HashSet<ArrayList<Integer>>();\
+		\cf2 int\cf0  i, j, k, p, q, r;\cf3 //i,k,q are for edge, j,p,r are for vertex\cf0 \
+\
+		\cf2 int\cf0  v1, e1, v2, e2, v3, e3;\
+		\
+		\cf3 //\ul int\ulnone [] tempArray = new \ul int\ulnone [6];\cf0 \
+		\
+		\cf2 for\cf0 (i = 0 ; i < array.\cf4 length\cf0  - 2; i++)\
+		\{\
+			\cf2 for\cf0  ( j = 0 ; j < array[0].\cf4 length\cf0  ; j ++ )\
+			\{\
+				\cf2 if\cf0 (array[i][j] == 1)\
+				\{\
+					\cf3 //v1 = j;\cf0 \
+					\cf2 for\cf0 (k = 0; k < array.\cf4 length\cf0 -1; k ++ )\
+					\{\
+						\cf2 if\cf0 ((array[k][j] == 1) && (k != i))\
+						\{\
+							\cf3 //e1 = k;\cf0 \
+							\cf3 //find the second vertex\cf0 \
+							\cf2 for\cf0 ( p = 0; p < array[0].\cf4 length\cf0 ; p++)\
+							\{\
+								\cf2 if\cf0 ((array[k][p] == 1) && (p != j))\
+								\{\
+									\cf3 //v2 = p;\cf0 \
+									\cf2 for\cf0 (q = 0; q < array.\cf4 length\cf0 ; q++)\
+									\{\
+										\cf2 if\cf0 ((array[q][p]==1) && ( q!= i ) && (q != k))\
+										\{\
+											\cf3 //e2 = q;\cf0 \
+											\cf2 for\cf0 (r = 0 ; r< array[0].\cf4 length\cf0 ; r++)\
+											\{\
+												\cf2 if\cf0 ((array[q][r]==1) && (array[i][r]==1) && (r != j) && (r!= p))\
+												\{\
+													v1 = j; e1 = k;\
+													v2 = p; e2 = q;\
+													v3 = r; e3 = i;\
+													ArrayList<Integer> tempArray = \cf2 new\cf0  ArrayList<Integer>();\
+													\cf3 //tempArray.add(0, v1+1);\cf0 \
+													\cf3 //tempArray.add(1, e1+315);\cf0 \
+													\cf3 ///tempArray.add(2, v2+1);\cf0 \
+													\cf3 //tempArray.add(3, e2+315);\cf0 \
+													\cf3 //tempArray.add(4, v3+1);\cf0 \
+													\cf3 //tempArray.add(5, e3+315);\cf0 \
+													tempArray.add(0, v1);\
+													tempArray.add(1, e1);\
+													tempArray.add(2, v2);\
+													tempArray.add(3, e2);\
+													tempArray.add(4, v3);\
+													tempArray.add(5, e3);\
+													set.add(tempArray);\
+												\}\
+											\}\
+										\}\
+									\}\
+								\}\
+							\}\
+						\}\
+					\}\
+				\}\
+			\}\
+		\}\
+		\cf2 return\cf0  set;\
+	\}\
+	\
+	\cf3 /*\cf0 \
+\cf3 	 * The index of star shape is stored as a set of vertices\cf0 \
+\cf3 	 * the vertex which has three or more edges related to it is in the index\cf0 \
+\cf3 	 */\cf0 \
+	\cf2 public\cf0  Set<Integer> getHyperStarIndex(\cf2 int\cf0 [][] array)\
+	\{\
+		Set<Integer> set = \cf2 new\cf0  HashSet<Integer>();\
+		\cf2 int\cf0  i, j, sum;\
+		\cf2 for\cf0  (i = 0; i < array[0].\cf4 length\cf0 ; i ++)\
+		\{\
+			sum = 0;\
+			\cf2 for\cf0  (j = 0; j < array.\cf4 length\cf0 ; j ++)\
+			\{\
+				\cf2 if\cf0 (array[j][i] == 1)\
+				\{\
+					sum ++;\
+				\}\
+					\
+			\}\
+			\cf2 if\cf0 (sum > 2)\
+			\{\
+				set.add(i+1);\
+			\}\
+		\}\
+		\
+		\cf2 return\cf0  set;\
+	\}\
+	\
+	\cf3 //the set of the permutation results\cf0 \
+	\cf2 private\cf0  Set<ArrayList<Integer>> \cf4 permutation\cf0  = \cf2 new\cf0  HashSet<ArrayList<Integer>>();\
+\
+	\cf3 /*\cf0 \
+\cf3 	 * fullPermu() implements the permutation of an array, e.g 6 arrays for [1,2,3]:\cf0 \
+\cf3 	 * [[3, 2, 1], [3, 1, 2], [1, 3, 2], [2, 3, 1], [2, 1, 3], [1, 2, 3]]\cf0 \
+\cf3 	 */\cf0 \
+	\cf2 public\cf0  Set<ArrayList<Integer>> fullPermu(\cf2 int\cf0 [] a, \cf2 int\cf0 [] b)\
+	\{\
+		\cf2 int\cf0  i, j, k, m, n;\
+		\cf2 int\cf0 [] temp1 = a;\
+		\cf2 int\cf0 [] temp2 = b;\
+		\cf2 if\cf0 (temp2.\cf4 length\cf0  == 1)\
+		\{\
+			ArrayList<Integer> result = \cf2 new\cf0  ArrayList<Integer>();\
+			\cf2 for\cf0 (\cf2 int\cf0  current: temp1)\
+				result.add(current);\
+			result.add(temp2[0]);\
+			\cf4 permutation\cf0 .add(result);\
+		\}\
+		\cf2 else\cf0  \cf2 for\cf0 (i = 0; i<temp2.\cf4 length\cf0 ;i++)\
+		\{\
+			\cf2 try\cf0 \{\
+				ArrayList<Integer> newArray = \cf2 new\cf0  ArrayList<Integer>();\cf3 //prepare for second parameter\cf0 \
+\
+				\cf2 for\cf0 (j=0; j < i ; j++)\
+				\{\
+					newArray.add(temp2[j]) ;\
+				\}\
+				\cf2 for\cf0 (k = j+1; k < temp2.\cf4 length\cf0 ; k++)\
+				\{\
+					newArray.add(temp2[k]) ;\
+				\}\
+				\cf2 int\cf0 [] tmp1 = \cf2 new\cf0  \cf2 int\cf0 [temp1.\cf4 length\cf0  + 1];\
+\
+				\cf2 if\cf0 (temp1.\cf4 length\cf0  == 0)\
+					tmp1[0] = temp2[i];\
+				\cf2 else\cf0 \
+				\{\
+					\cf2 for\cf0 (n = 0; n < temp1.\cf4 length\cf0 ; n++)\
+					\{\
+						tmp1[n] = temp1[n];\
+					\}\
+					tmp1[n] = temp2[i];\
+				\}\
+\
+				\cf2 int\cf0 [] tmp2 = \cf2 new\cf0  \cf2 int\cf0 [newArray.size()];\
+				\cf2 for\cf0 (m = 0; m< newArray.size(); m++)\
+				\{\
+					tmp2[m] = newArray.get(m);\
+				\}\
+				fullPermu(tmp1, tmp2);\
+			\}\cf2 catch\cf0 (IndexOutOfBoundsException e)\{\
+		          e.printStackTrace();\
+			\}\
+		\}\
+		\cf2 return\cf0  \cf4 permutation\cf0 ;\
+	\}\
+\
+	\cf3 /*\cf0 \
+\cf3 	 * getAllCombinations & combination give the permutation of m numbers out of n\cf0 \
+\cf3 	 */\cf0 \
+	\cf2 public\cf0  \cf2 static\cf0  ArrayList<ArrayList<Integer>> Permutation(ArrayList<Integer> data, \cf2 int\cf0  length)\
+	\{\
+		ArrayList<ArrayList<Integer>> allCombinations = \cf2 new\cf0  ArrayList<ArrayList<Integer>>();\
+		ArrayList<Integer> initialCombination = \cf2 new\cf0  ArrayList<Integer>();\
+		combination(allCombinations, data, initialCombination, length);\
+		\cf2 return\cf0  allCombinations;\
+	\}\
+	\cf2 private\cf0  \cf2 static\cf0  \cf2 void\cf0  combination(ArrayList<ArrayList<Integer>> allCombinations, ArrayList<Integer> data, \
+		ArrayList<Integer> initialCombination, \cf2 int\cf0  length)\
+	\{\
+		\cf2 if\cf0 (length == 1)\
+		\{\
+			\cf2 for\cf0 (\cf2 int\cf0  i=0; i<data.size(); i++)\
+			\{\
+				ArrayList<Integer> newCombination = \cf2 new\cf0  ArrayList<Integer>(initialCombination);\
+				newCombination.add(data.get(i));\
+				allCombinations.add(newCombination);\
+			\}\
+		\}\
+\
+		\cf2 else\cf0  \cf2 if\cf0 (length > 1)\
+		\{\
+			\cf2 for\cf0 (\cf2 int\cf0  i=0; i<data.size(); i++)\
+			\{\
+				ArrayList<Integer> newCombination = \cf2 new\cf0  ArrayList<Integer>(initialCombination);\
+				newCombination.add(data.get(i));\
+\
+				ArrayList<Integer> newData = \cf2 new\cf0  ArrayList<Integer>(data);\
+				\cf2 for\cf0 (\cf2 int\cf0  j=0; j<=i; j++)\
+					newData.remove(data.get(i));\
+\
+				combination(allCombinations, newData, newCombination, length - 1);\
+			\}\
+		\}\
+	\}\
+	\
+	\cf3 /*\cf0 \
+\cf3 	 * create a \ul hashtable\ulnone  based on an array, rows are keys, column= 1, add it to value\cf0 \
+\cf3 	 */\cf0 \
+	\cf2 public\cf0  	HashMap<Integer, Set<Integer>> array2hash(\cf2 int\cf0 [][] hyper)\
+	\{\
+		HashMap<Integer, Set<Integer>> hash = \cf2 new\cf0  HashMap<Integer, Set<Integer>>();\
+		\cf2 int\cf0  m,n;\
+		\cf2 for\cf0 (m = 0; m < hyper.\cf4 length\cf0 ; m++)\
+		\{\
+			Set<Integer> s = \cf2 new\cf0  HashSet<Integer>();\
+			\cf2 for\cf0 (n = 0; n< hyper[0].\cf4 length\cf0 ; n++)\
+			\{\
+				\cf2 if\cf0 (hyper[m][n] == 1)\
+				\{\
+					s.add(n);\
+				\}\
+			\}\
+			hash.put(m, s);\
+		\}\
+		\cf2 return\cf0  hash;\
+	\}\
+\
+\
+	\
+	\cf3 /*\cf0 \
+\cf3 	 * determine if a \ul hypergraph\ulnone  has a subgraph, ignore label\cf0 \
+\cf3 	 * give each vertex and edge a hash value to match to the hyper graph\cf0 \
+\cf3 	 * if there is a match, this subgraph is in the \ul hypergraph\ulnone , otherwise, no\cf0 \
+\cf3 	 */\cf0 \
+	\cf2 public\cf0  Boolean determine(\cf2 int\cf0 [][] array, \cf2 int\cf0 [][] hyper)\{\
+		\cf2 int\cf0  m,n,o, p, q, size;\
+		\cf2 int\cf0  flag = 0;\cf3 //flag should be 1 if there is a match\cf0 \
+		\cf2 int\cf0  flg = 0;\cf3 //test whether an edge is in otherV\cf0 \
+		Set<ArrayList<Integer>> large = \cf2 new\cf0  HashSet<ArrayList<Integer>>();\
+		\cf3 //mySet: the triangles got by subgraph\cf0 \
+		Set<ArrayList<Integer>> mySet = \cf2 new\cf0  HashSet<ArrayList<Integer>>();\
+\
+		\cf3 //Set<Integer> others = new HashSet<Integer>(); \cf0 \
+		\cf3 //unionSet: all vertices related to triangle edges other than the three in index\cf0 \
+		Set<Integer> unionSet = \cf2 new\cf0  HashSet<Integer>(); \
+		\cf3 /*\cf0 \
+\cf3 		 * create hash table: paper-authors\cf0 \
+\cf3 		 */\cf0 \
+		HashMap<Integer, Set<Integer>> paper_au = \cf2 new\cf0  HashMap<Integer, Set<Integer>>();\
+		paper_au = array2hash(hyper);\
+		ArrayList<Integer> allPaper = \cf2 new\cf0  ArrayList<Integer>(paper_au.keySet());\
+		Set<Integer> allA = \cf2 new\cf0  HashSet<Integer>();\
+		\cf2 for\cf0 (Integer currentPaper: allPaper)\
+		\{\
+			\cf2 for\cf0 (Integer author: paper_au.get(currentPaper) )\
+				allA.add(author);\
+		\}\
+		ArrayList<Integer> allAuthor = \cf2 new\cf0  ArrayList<Integer>(allA);\
+\
+		\
+		\
+		HashMap<Integer, Integer> realVhash = \cf2 new\cf0  HashMap<Integer, Integer>();\
+		HashMap<Integer, Integer> realEhash = \cf2 new\cf0  HashMap<Integer, Integer>();\
+		HashMap<Integer, Integer> realOtherVhash = \cf2 new\cf0  HashMap<Integer, Integer>();\
+		HashMap<Integer, Integer> realOtherEhash = \cf2 new\cf0  HashMap<Integer, Integer>();\
+		HashMap<Integer, Integer> realZeroVhash = \cf2 new\cf0  HashMap<Integer, Integer>();\
+\
+		large = getHyperTriangleIndex(hyper);\
+		mySet = getHyperTriangleIndex(array);\
+		\
+		\cf2 if\cf0 (mySet.size() > 0)\
+		\{\
+			\cf2 for\cf0 (ArrayList<Integer> i: mySet)\
+			\{\
+				\cf2 for\cf0 (ArrayList<Integer> j: large)\
+				\{\
+					\cf3 //otherV: vertices not in Triangle index, but related to this triangle\cf0 \
+					\cf3 //otherV , otherE , and zero V are all related to "array", not hyper\cf0 \
+					ArrayList<Integer> otherV = \cf2 new\cf0  ArrayList<Integer>();\
+					ArrayList<Integer> otherE = \cf2 new\cf0  ArrayList<Integer>();\
+					\cf3 //vertices not related to the triangle: test them to the other edges\cf0 \
+					ArrayList<Integer> zeroV = \cf2 new\cf0  ArrayList<Integer>();\
+					\
+					\
+					\cf3 //hash the sub graph's v and e to the large graph's v and e\cf0 \
+					HashMap<Integer, Integer> vhash = \cf2 new\cf0  HashMap<Integer, Integer>();\
+					HashMap<Integer, Integer> ehash = \cf2 new\cf0  HashMap<Integer, Integer>();\
+					HashMap<Integer, Integer> otherVhash = \cf2 new\cf0  HashMap<Integer, Integer>();\
+\
+\
+					\cf3 //triangle's edges and vertices hash from subgraph to large graph\cf0 \
+					\cf2 for\cf0 (m = 0; m < 3; m++)\
+					\{\
+						vhash.put(i.get(m*2), j.get(m*2));\
+						ehash.put(i.get(m*2+1), j.get(m*2+1));\
+					\}\
+					\
+					\cf3 //11111:pick the vertex not in triangle index(column of a vertex not all 0s)\cf0 \
+					\cf2 for\cf0 (n = 0; n < array[0].\cf4 length\cf0 ; n++)\
+					\{\
+						\cf2 if\cf0 (!(vhash.keySet().contains(n)) \
+								&& array[i.get(1)][n] + array[i.get(3)][n] + array[i.get(5)][n] > 0 )\
+						\{\
+							otherV.add(n);\
+						\}\
+					\}\
+					\cf3 //22222:pick the edges not in triangle \cf0 \
+					\cf2 for\cf0 (n = 0; n < array.\cf4 length\cf0 ; n++)\
+					\{\
+						\cf2 if\cf0 (!(ehash.keySet().contains(n)) )\
+						\{\
+							otherE.add(n);\
+						\}\
+					\}\
+					\cf3 //get all the related nodes of the three edges in triangle\cf0 \
+					unionSet = union(paper_au.get(j.get(1)), \
+							union(paper_au.get(j.get(5)),paper_au.get(j.get(3))));\
+\
+					\cf2 if\cf0 (otherV.size() > unionSet.size())\cf3 //if there are more related vertices: false\cf0 \
+					\{\
+						flag = 0;\
+						\cf2 continue\cf0 ;\
+					\}\
+					\cf2 else\cf0 \
+					\{\
+						ArrayList<Integer> permu = \cf2 new\cf0  ArrayList<Integer>(unionSet);\
+\
+						ArrayList<ArrayList<Integer>> permuResults = Permutation(permu,otherV.size());\
+						ArrayList<ArrayList<Integer>> newPermu = \cf2 new\cf0  ArrayList<ArrayList<Integer>>();\
+						\
+						\cf3 //remove \cf0 \
+						\cf2 for\cf0 (ArrayList<Integer> currentPermu: permuResults)\
+						\{\
+							\cf3 //not including three triangle edges\cf0 \
+							\cf2 if\cf0 ( (!currentPermu.contains(j.get(0)))\
+									&&(!currentPermu.contains(j.get(2)))\
+									&&(!currentPermu.contains(j.get(4))) )\
+							\{								\
+								newPermu.add(currentPermu);\
+							\}\
+						\}\
+						\cf3 //Starting test each permutation to the three edges in triangle\cf0 \
+						\cf3 //othersArray.get(i) correspond permuResults[0].get(i)\cf0 \
+						\cf2 for\cf0 (ArrayList<Integer> currentPermu: newPermu)\
+						\{\
+							flag = 1;\
+							\cf3 //test three triangle edges to other vertices if to triangle vertices are true\cf0 \
+							\cf2 for\cf0 (o = 0 ; o < otherV.size(); o++)\
+							\{\
+								\cf3 //compare subgraph and whole graph\cf0 \
+								\cf2 if\cf0 ((array[i.get(1)][otherV.get(o)] <= hyper[ehash.get(i.get(1))][currentPermu.get(o)])\
+										&&(array[i.get(3)][otherV.get(o)] <= hyper[ehash.get(i.get(3))][currentPermu.get(o)])\
+										&&(array[i.get(5)][otherV.get(o)] <= hyper[ehash.get(i.get(5))][currentPermu.get(o)]))\
+								\{\
+									otherVhash.put(otherV.get(o), currentPermu.get(o));\
+									flag = flag * 1;\
+								\}\
+								\cf2 else\cf0 \
+								\{\
+									flag = 0;\
+									\cf2 break\cf0 ;\
+								\}\
+							\}\
+							\cf3 //test non-triangle edges to all non zero vertices\cf0 \
+							\cf2 if\cf0 ((flag == 1) && (otherE.size() > 0))\
+							\{\
+								\cf3 //add the \ul hashtable\ulnone  of "other" edges\cf0 \
+								HashMap<Integer, Integer> otherEhash = \cf2 new\cf0  HashMap<Integer, Integer>();\
+								\
+								ArrayList<ArrayList<Integer>> otherEpermu = Permutation(allPaper,otherE.size());\
+								ArrayList<ArrayList<Integer>> newOtherEpermu = \cf2 new\cf0  ArrayList<ArrayList<Integer>>();\
+								\
+								\cf3 //remove \cf0 \
+								\cf2 for\cf0 (ArrayList<Integer> currentEpermu: otherEpermu)\
+								\{\
+									\cf3 //not including three triangle edges\cf0 \
+									\cf2 if\cf0 ( (!currentEpermu.contains(j.get(1)))\
+											&&(!currentEpermu.contains(j.get(3)))\
+											&&(!currentEpermu.contains(j.get(5))) )\
+									\{								\
+										newOtherEpermu.add(currentEpermu);\
+									\}\
+								\}\
+								\cf2 for\cf0 (ArrayList<Integer> currentEpermu: newOtherEpermu)\
+								\{\
+									flag = 1;\
+									\cf2 for\cf0 (p = 0; p< otherE.size(); p++)\
+									\{\
+										\cf2 for\cf0 (q = 0; q < otherV.size(); q++)\
+										\{\
+											\cf2 if\cf0 ( (array[otherE.get(p)][i.get(0)] <= hyper[currentEpermu.get(p)][vhash.get(i.get(0))])\
+												&&(array[otherE.get(p)][i.get(2)] <= hyper[currentEpermu.get(p)][vhash.get(i.get(2))])\
+												&&(array[otherE.get(p)][i.get(4)] <= hyper[currentEpermu.get(p)][vhash.get(i.get(4))])\
+												&&(array[otherE.get(p)][otherV.get(q)] <= hyper[currentEpermu.get(p)][otherVhash.get(otherV.get(q))]))\
+											\{\
+												flag = flag * 1;\
+											\}\
+											\cf2 else\cf0 \
+											\{\
+												flag = 0;\
+												\cf2 break\cf0 ;\
+											\}\
+										\}\
+										\cf2 if\cf0 (flag == 0)\
+										\{\
+											\cf2 break\cf0 ;\
+										\}\
+										\cf2 else\cf0 \
+										\{\
+											otherEhash.put(otherE.get(p), currentEpermu.get(p));\
+										\}\
+									\}\
+									\cf2 if\cf0 (flag == 1)\
+									\{\
+										realOtherEhash = otherEhash;\
+										\cf2 break\cf0 ;\
+									\}\
+								\}\
+\
+								\cf3 //DO THE MEMORY RELEASE\cf0 \
+								\cf2 for\cf0 (size = 0 ; size < otherEpermu.size(); size++)\
+									otherEpermu.remove(size);\
+								otherEpermu.trimToSize();\
+								\cf2 for\cf0 (size = 0 ; size < newOtherEpermu.size(); size++)\
+									newOtherEpermu.remove(size);\
+								newOtherEpermu.trimToSize();\
+								\
+								\cf3 //test zero edges\cf0 \
+								\cf2 if\cf0 ((flag == 1) && (otherE.size() > 0))\
+								\{\
+									HashMap<Integer, Integer> zeroVhash = \cf2 new\cf0  HashMap<Integer, Integer>();\
+\
+									\cf2 for\cf0 (p = 0; p< array[0].\cf4 length\cf0 ; p++)\
+									\{\
+										\cf2 if\cf0 ( (!vhash.containsKey(p)) && (!otherVhash.containsKey(p)) )\
+											zeroV.add(p);\
+									\}\
+									ArrayList<ArrayList<Integer>> zeroVpermu = Permutation(allAuthor,zeroV.size());\
+									ArrayList<ArrayList<Integer>> newZeroVpermu = \cf2 new\cf0  ArrayList<ArrayList<Integer>>();\
+									\cf3 //remove triangle vertices and related vertices in the permutation\cf0 \
+									\cf2 for\cf0 (ArrayList<Integer> currentZpermu: zeroVpermu)\
+									\{\
+										\cf3 //not including three triangle vertices and related vertices\cf0 \
+										\cf2 if\cf0 ( (!currentZpermu.contains(j.get(0)))\
+												&&(!currentZpermu.contains(j.get(2)))\
+												&&(!currentZpermu.contains(j.get(4))) )\
+										\{							\
+											flg = 1;\
+											\cf2 for\cf0 (m = 0; m< otherV.size() ; m++)\
+											\{\
+												\cf2 if\cf0 (!currentZpermu.contains(otherVhash.get(otherV.get(m))))\
+													flg = flg * 1;\
+												\cf2 else\cf0 \
+												\{\
+													flg = 0;\
+													\cf2 break\cf0 ;\
+												\}\
+									\
+											\}\
+											\cf2 if\cf0 (flg == 1)\
+												newZeroVpermu.add(currentZpermu);\
+										\}\
+									\}\
+									\cf2 for\cf0 (ArrayList<Integer> currentZpermu: newZeroVpermu)\
+									\{\
+										flag = 1;\
+										\cf2 for\cf0 (q = 0; q < zeroV.size(); q++)\
+										\{\
+											\cf2 for\cf0 (p = 0; p< otherE.size(); p++)\
+											\{\
+												\cf2 if\cf0 (currentZpermu.get(q) == 13)\
+													System.\cf4 out\cf0 .print(currentZpermu.get(q));\
+												\cf2 if\cf0 (array[otherE.get(p)][zeroV.get(q)] <= hyper[otherEhash.get(otherE.get(p))][currentZpermu.get(q)])\
+												\{\
+													flag = flag * 1;\
+												\}\
+												\cf2 else\cf0 \
+												\{\
+													flag = 0;\
+													\cf2 break\cf0 ;\
+												\}\
+											\}\
+											\cf2 if\cf0 (flag == 0)\
+											\{\
+												\cf2 break\cf0 ;\
+											\}\
+											\cf2 else\cf0 \
+											\{\
+												zeroVhash.put(zeroV.get(q), currentZpermu.get(q));\
+											\}\
+										\}\
+										\cf2 if\cf0 (flag == 1)\
+										\{\
+											realZeroVhash = zeroVhash;\
+											\cf2 break\cf0 ;\
+										\}\
+									\}\
+									\
+								\}\
+								\cf2 else\cf0 \
+								\{\
+									\cf2 break\cf0 ;\
+								\}\
+							\}\
+							\cf2 if\cf0 (flag == 1)\
+							\{\
+								\cf2 break\cf0 ;\
+							\}\
+						\}\
+						\cf2 if\cf0 (flag == 1)\
+						\{\
+							realOtherVhash = otherVhash;\
+						\}\
+					\}\
+					\cf2 if\cf0 (flag == 1)\
+					\{\
+						realEhash = ehash;\
+						realVhash = vhash;\
+						\cf2 break\cf0 ;\
+					\}\
+				\}\
+				\cf2 if\cf0 (flag == 1)\
+				\{\
+					\cf2 break\cf0 ;\
+				\}\
+			\}\
+\
+		\}\
+		System.\cf4 out\cf0 .println(\cf5 "~~~"\cf0 );\
+		\cf2 if\cf0 (flag == 1)\
+		\{\
+			System.\cf4 out\cf0 .print(realEhash);\
+			System.\cf4 out\cf0 .print(realVhash);\
+			System.\cf4 out\cf0 .print(realOtherEhash);\
+			System.\cf4 out\cf0 .print(realOtherVhash);\
+			System.\cf4 out\cf0 .print(realZeroVhash);\
+			\cf2 return\cf0  \cf2 true\cf0 ;\
+		\}\
+		\cf2 else\cf0 \
+			\cf2 return\cf0  \cf2 false\cf0 ;\
+	\}\
+\}\
+}

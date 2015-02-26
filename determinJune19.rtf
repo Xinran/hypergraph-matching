@@ -1,0 +1,137 @@
+{\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf540
+{\fonttbl\f0\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;\red127\green0\blue85;\red63\green127\blue95;\red42\green0\blue255;
+\red0\green0\blue192;}
+\vieww16700\viewh7340\viewkind0
+\deftab720
+\pard\pardeftab720
+
+\f0\fs22 \cf2 import\cf0  java.io.BufferedReader;\
+\cf2 import\cf0  java.io.DataInputStream;\
+\cf2 import\cf0  java.io.FileInputStream;\
+\cf2 import\cf0  java.io.InputStreamReader;\
+\cf2 import\cf0  java.util.ArrayList;\
+\cf2 import\cf0  \ul java.util.Arrays\ulnone ;\
+\cf2 import\cf0  \ul java.util.HashSet\ulnone ;\
+\cf2 import\cf0  java.util.Iterator;\
+\cf2 import\cf0  \ul java.util.Set\ulnone ;\
+\cf2 import\cf0  \ul java.util.ArrayList\ulnone ;\
+\cf2 import\cf0  java.util.regex.Pattern;\
+\
+\
+\cf2 import\cf0  tutorial.MapStringList;\
+\
+\
+\pard\pardeftab720
+\cf3 /*\cf0 \
+\cf3  * This class create the \cf3 \ul \ulc3 hypergraph\cf3 \ulnone  of the paper-author relationship: hyper[][]\cf0 \
+\cf3  * paper is edge(rows) , author is vertex(columns)\cf0 \
+\cf3  */\cf0 \
+\pard\pardeftab720
+\cf2 public\cf0  \cf2 class\cf0  createGraph \{\
+	\
+	\cf2 public\cf0  \cf2 static\cf0  \cf2 void\cf0  main(String[] args) \{\
+		\
+		String[] result2;\
+		\cf2 int\cf0 [][] hyper = \cf2 new\cf0  \cf2 int\cf0 [360][314];\
+		\ul Iterator\ulnone  itr;\
+		\cf2 int\cf0  \ul size\ulnone ;\
+		\cf2 int\cf0  a, b;\
+		\
+		\cf3 //\cf3 \ul \ulc3 hashtable\cf3 \ulnone  keys are papers , key's values are this paper's authors\cf0 \
+		MapStringList coauthor = \cf2 new\cf0  MapStringList();\
+		  \cf3 //read the second file for author - paper relationship\cf0 \
+		  \cf2 try\cf0 \{\
+			  \cf3 // Open the file that is the first \cf0 \
+			  \cf3 // command line parameter\cf0 \
+			  FileInputStream fstream2 = \cf2 new\cf0  FileInputStream(\cf4 "coauthor.txt"\cf0 );\
+			  \cf3 // Get the object of DataInputStream\cf0 \
+			  DataInputStream in2 = \cf2 new\cf0  DataInputStream(fstream2);\
+			  BufferedReader br2 = \cf2 new\cf0  BufferedReader(\cf2 new\cf0  InputStreamReader(in2));\
+			  String strLine2;\
+			  \cf3 //Read File Line By Line\cf0 \
+			  \cf2 while\cf0  ((strLine2 = br2.readLine()) != \cf2 null\cf0 )   \
+			  \{\
+				  \cf3 // Print the content on the console\cf0 \
+				  \cf3 //System.out.println (strLine2);\cf0 \
+				  \
+				  \cf3 // Create a pattern to match breaks\cf0 \
+			      Pattern p = Pattern.compile(\cf4 "[\\\\s]+"\cf0 );\
+			      \cf3 // Split input with the pattern\cf0 \
+			      result2 = p.split(strLine2);\
+			      \cf2 int\cf0  \ul temp\ulnone  = Integer.parseInt(result2[0]);\
+				  coauthor.add(result2[1], result2[0]);\
+\
+			  \}\
+			  \cf3 //add \cf3 \ul \ulc3 hashtable\cf3 \ulnone  : paper ---authors\cf0 \
+			  \cf3 //Close the input stream\cf0 \
+			  in2.close();\
+			  \}\cf2 catch\cf0  (Exception e)\{\cf3 //Catch exception if any\cf0 \
+			  System.\cf5 err\cf0 .println(\cf4 "Error: "\cf0  + e.getMessage());\
+			  \}\
+		  itr = (coauthor.getKeys()).iterator(); \
+		  \cf2 while\cf0 (itr.hasNext()) \{\
+				\cf3 //get each key: element\cf0 \
+			    Object element = itr.next(); \
+			    size = coauthor.getValues(element.toString()).size();\
+			    \cf3 //array has the \cf3 \ul \ulc3 coauthors\cf3 \ulnone  of current author\cf0 \
+			    Object[] array = (coauthor.getValues(element.toString())).toArray();\
+			    \
+			    \cf3 // create the TWO DIMENSIONAL ARRAY of \cf3 \ul \ulc3 hypergraph\cf0 \ulnone \
+			    \cf2 for\cf0 (Object ip : array)\
+			    \{\
+			    	b = Integer.parseInt(ip.toString());\cf3 //author:column:vertex\cf0 \
+			    	a = Integer.parseInt(element.toString());\cf3 //paper:row:edge\cf0 \
+			    	hyper[a-315][b-1] = 1;\
+			    	\cf3 //System.out.print(a);\cf0 \
+			    	\cf3 //System.out.println(b);\cf0 \
+			    \}\
+		  \}\
+		  \
+		  \
+		  determin c = \cf2 new\cf0  determin();\
+		  \cf2 for\cf0  (ArrayList<Integer> \ul i\ulnone : c.getHyperTriangleIndex(hyper))\
+		  \{\
+			\cf3 //  System.out.println(i);\cf0 \
+		  \}\
+		  \cf3 //for (\cf3 \ul \ulc3 int\cf3 \ulnone  i: c.getHyperStarIndex(hyper))\cf0 \
+		  \{\
+			  \cf3 //System.out.println(i);\cf0 \
+		  \}\
+		  \cf2 int\cf0 [][] multiD = \{\
+		    	      \{ 1,1,0,0,0\},\
+		    	      \{ 1,0,0,1,0\},\
+		    	      \{ 0,1,0,1,1\},\
+		    	      \{0,1,0,0,0\}\
+		    	      \};\
+		  \cf2 boolean\cf0  bb = c.determine(multiD, hyper);\
+		  System.\cf5 out\cf0 .print(bb);\
+		  \
+		  \
+		  \cf3 /*\cf0 \
+\pard\pardeftab720
+\cf3 		   * test fullPermu();\cf0 \
+\cf3 		   \cf0 \
+\cf3 		  \cf3 \ul \ulc3 int\cf3 \ulnone [] l1 = \{\};\cf0 \
+\cf3 		  \cf3 \ul \ulc3 int\cf3 \ulnone [] l2 = \{1,2,3\};\cf0 \
+\cf3 		  Set<ArrayList<Integer>> \cf3 \ul \ulc3 permut\cf3 \ulnone = new HashSet<ArrayList<Integer>>();\cf0 \
+\cf3 		  \cf3 \ul \ulc3 permut\cf3 \ulnone  = c.fullPermu(l1, l2);\cf0 \
+\cf3 		  System.out.print(\cf3 \ul \ulc3 permut\cf3 \ulnone );\cf0 \
+\cf3 		  \cf0 \
+\cf3 		   * END\cf0 \
+\cf3 		   */\cf0 \
+		  \
+		  \cf3 /*\cf0 \
+\cf3 		   * test Permutation();\cf0 \
+\cf3 		   		  \cf0 \
+\cf3 			ArrayList<Integer> testData = new ArrayList<Integer>(Arrays.asList(1, 2, 355, 4, 5, 6));\cf0 \
+\cf3 			ArrayList<ArrayList<Integer>> results = c.Permutation(testData,1);\cf0 \
+\cf3 			for(\cf3 \ul \ulc3 int\cf3 \ulnone  i=0; i<results.size(); i++)\cf0 \
+\cf3 				System.out.println(results.get(i));\cf0 \
+\cf3 			  \cf0 \
+\cf3 			   * END\cf0 \
+\cf3 			   */\cf0 \
+\
+	\}\
+\}\
+}
